@@ -3,6 +3,8 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const Product = require('./models/product')
+app.use(express.static('build'))
+
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -51,7 +53,7 @@ app.delete('/api/cart', async (req, res) => {
   const { id } = req.body
 
   await Product.findByIdAndRemove(id)
-  res.status(204).send({ error: 'unknown endpoint' })
+  res.status(204).end()
 })
 
 const unknownEndpoint = (request, response) => {
