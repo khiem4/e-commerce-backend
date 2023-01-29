@@ -3,7 +3,8 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const Product = require('./models/product')
-app.use(express.static('build'))
+const morgan = require('morgan')
+// app.use(express.static('build'))
 
 
 const requestLogger = (request, response, next) => {
@@ -17,6 +18,21 @@ const requestLogger = (request, response, next) => {
 app.use(cors())
 app.use(express.json())
 app.use(requestLogger)
+
+morgan.token('body', (req, res) => {
+  return JSON.stringify(req.body)
+})
+
+app.use(morgan(`
+:method 
+:url 
+:body`))
+
+
+app.get('/api/cart', async (req, res) => {
+  const response = await Product.find({})
+  res.json(response)
+})
 
 app.post('/api/cart', async (req, res) => {
   const body = req.body
@@ -36,11 +52,6 @@ app.post('/api/cart', async (req, res) => {
   res.json(savedProduct)
 })
 
-app.get('/api/cart', async (req, res) => {
-  const response = await Product.find({})
-  res.json(response)
-})
-
 app.put('/api/cart', async (req, res) => {
   const { quantity, id } = req.body
 
@@ -49,10 +60,10 @@ app.put('/api/cart', async (req, res) => {
   res.json(updated)
 })
 
-app.delete('/api/cart', async (req, res) => {
-  const { id } = req.body
+app.delete('/api/cart/:id', async (req, res) => {
+  const  { id }  = req.params
 
-  await Product.findByIdAndRemove(id)
+  await Product.findByIdAndRemove(id) 
   res.status(204).end()
 })
 
@@ -70,7 +81,6 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
-// this has to be the last loaded middleware.
 app.use(errorHandler)
 
 app.use(unknownEndpoint)
