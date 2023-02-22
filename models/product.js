@@ -1,21 +1,14 @@
 const mongoose = require('mongoose')
 
-const url = process.env.MONGODB_URI
-
-mongoose.set('strictQuery', false)
-mongoose.connect(url)
-  .then(() => {
-    console.log(`connect to ${url}`)
-  })
-  .catch(() => {
-    console.log('error can\'t connect')
-  })
-
 const productSchema = new mongoose.Schema({
   title: String,
   thumbnail: String,
   price: Number,
   quantity: Number,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 })
 
 productSchema.set('toJSON', {
