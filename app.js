@@ -1,9 +1,9 @@
 const config = require('./utils/config')
 const express = require('express')
-require('express-async-errors')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
+require('express-async-errors')
 
 const cartRouter = require('./controllers/cart')
 const usersRouter = require('./controllers/users')
@@ -14,7 +14,11 @@ mongoose.set('strictQuery', false)
 
 console.log('connecting to', config.MONGODB_URI)
 
-mongoose.connect('mongodb+srv://khiem4:0905161658@cluster0.qabisdn.mongodb.net/ecommerce?retryWrites=true&w=majority' ,{useNewUrlParser: true})
+mongoose.connect(config.MONGODB_URI ,{
+  useUnifiedTopology:true,
+  useNewUrlParser: true,
+  useCreateIndex: true
+})
   .then(() => {
     console.log('connected to MongoDB')
   })
