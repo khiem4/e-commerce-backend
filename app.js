@@ -14,7 +14,7 @@ mongoose.set('strictQuery', false)
 
 console.log('connecting to', config.MONGODB_URI)
 
-mongoose.connect('mongodb+srv://khiem4:0905161658@cluster0.qabisdn.mongodb.net/ecommerce?' ,{useNewUrlParser: true})
+mongoose.connect('mongodb+srv://khiem4:0905161658@cluster0.qabisdn.mongodb.net/ecommerce?retryWrites=true&w=majority' ,{useNewUrlParser: true})
   .then(() => {
     console.log('connected to MongoDB')
   })
