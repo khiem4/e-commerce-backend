@@ -15,9 +15,6 @@ mongoose.set('strictQuery', false)
 console.log('connecting to', config.MONGODB_URI)
 
 mongoose.connect(config.MONGODB_URI ,{
-  useUnifiedTopology:true,
-  useNewUrlParser: true,
-  useCreateIndex: true
 })
   .then(() => {
     console.log('connected to MongoDB')
